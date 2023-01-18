@@ -21,6 +21,10 @@ def current(request, city=None):
         datos3 = r3.json()
         return JsonResponse(datos3)
 
+def prueba(request):
+    return HttpResponse("hola mundo")
+
+
 
     
 
