@@ -7,6 +7,7 @@ urlpatterns = [
     path("current/",views.current, name='current'),
     path("prueba",views.prueba, name='prueba'),
     path("delete",views.delete, name='delete'),
+    path("all",views.find_all, name='delete'),
 
 ]
 

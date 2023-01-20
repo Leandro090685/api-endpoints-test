@@ -38,4 +38,13 @@ def delete(request):
     Registros.objects.all().delete()
     return HttpResponse("ok")
     
+def find_all(request):
+    all = Registros.objects.all()
+    print("ACA ABAJO")
+    lista = list()
+    for one in all:
+        lista.append(model_to_dict(one))
+    final_dict = {"all_registers":lista}
+    return JsonResponse(final_dict)
+    
     
