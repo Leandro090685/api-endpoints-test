@@ -3,7 +3,7 @@ from django.http import HttpResponse, JsonResponse
 import requests
 from clima.models import Registros
 from django.forms.models import model_to_dict
-
+from django.views.decorators.csrf import csrf_exempt
 
 def index(request):
     r = requests.get("http://ip-api.com/json/")
@@ -47,4 +47,11 @@ def find_all(request):
     final_dict = {"all_registers":lista}
     return JsonResponse(final_dict)
     
-    
+@csrf_exempt
+def delete(request,id):
+    if request.method == 'DELETE':
+        Registros.objects.filter(id=id).delete()
+        message = "Id Nº "+str(id)+" deleted"
+    else:
+        message = "Error in method"
+    return HttpResponse(message)
