@@ -3,6 +3,9 @@ from django.http import HttpResponse, JsonResponse
 import requests
 from clima.models import Registros
 from django.forms.models import model_to_dict
+from rest_framework import generics
+from clima.serializers.registro_serializer import RegistroSerializer
+
 
 
 def index(request):
@@ -38,4 +41,10 @@ def delete(request):
     Registros.objects.all().delete()
     return HttpResponse("ok")
     
-    
+class RetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Registros.objects.all()
+    serializer_class = RegistroSerializer
+
+class RegisterRetrieve(generics.RetrieveAPIView):
+    queryset = Registros.objects.all()
+    serializer_class = RegistroSerializer
