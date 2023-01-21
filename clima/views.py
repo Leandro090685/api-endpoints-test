@@ -4,6 +4,7 @@ import requests
 from clima.models import Registros
 from django.forms.models import model_to_dict
 from rest_framework import generics
+from rest_framework.views import APIView
 from clima.serializers.registro_serializer import RegistroSerializer
 
 
@@ -45,6 +46,28 @@ class RetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = Registros.objects.all()
     serializer_class = RegistroSerializer
 
-class RegisterRetrieve(generics.RetrieveAPIView):
+class RegistrosListview(generics.ListAPIView):
     queryset = Registros.objects.all()
     serializer_class = RegistroSerializer
+
+class CreateRegistro(APIView):
+    def get(self, request, city=None, format=None):
+        if (not city):
+            r = requests.get("http://ip-api.com/json/")
+            city = r.json()["city"]
+        r= requests.get("https://wttr.in/"+ city +"?format=j1&lang=es")
+        data= r.json()
+        registro = Registros()
+
+        registro.city = city
+        registro.temperature = data["current_condition"][0]["temp_C"]
+        registro.humidity = data["current_condition"][0]["humidity"]
+        registro.feels_like = data["current_condition"][0]["FeelsLikeC"]
+
+        registro.save()
+
+        return JsonResponse(model_to_dict(registro))
+
+
+            
+
