@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from clima.serializers.registro_serializer import RegistroSerializer
 
-
+from django.views.decorators.csrf import csrf_exempt
 
 def index(request):
     r = requests.get("http://ip-api.com/json/")
@@ -72,3 +72,20 @@ class CreateRegistro(APIView):
 
             
 
+
+def find_all(request):
+    all = Registros.objects.all()
+    lista = list()
+    for one in all:
+        lista.append(model_to_dict(one))
+    final_dict = {"all_registers":lista}
+    return JsonResponse(final_dict)
+    
+@csrf_exempt
+def delete(request,id):
+    if request.method == 'DELETE':
+        Registros.objects.filter(id=id).delete()
+        message = "Id Nº "+str(id)+" deleted"
+    else:
+        message = "Error in method"
+    return HttpResponse(message)
