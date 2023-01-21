@@ -89,3 +89,6 @@ def delete(request,id):
     else:
         message = "Error in method"
     return HttpResponse(message)
+
+def hello():
+    pass
