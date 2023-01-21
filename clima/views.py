@@ -4,6 +4,7 @@ import requests
 from clima.models import Registros
 from django.forms.models import model_to_dict
 from rest_framework import generics
+from rest_framework.response import Response 
 from rest_framework.views import APIView
 from clima.serializers.registro_serializer import RegistroSerializer
 
@@ -66,7 +67,7 @@ class CreateRegistro(APIView):
 
         registro.save()
 
-        return JsonResponse(model_to_dict(registro))
+        return Response(model_to_dict(registro))
 
 
             
