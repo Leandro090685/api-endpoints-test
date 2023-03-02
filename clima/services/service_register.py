@@ -1,4 +1,5 @@
 import requests
+from .service_check import CheckService
 
 class RegisterService:
 
@@ -6,7 +7,10 @@ class RegisterService:
         if (not city):
             r = requests.get("http://ip-api.com/json/")
             city = r.json()["city"]
+            
+        CheckService.check(ciudad=city)
         r= requests.get("https://wttr.in/"+ city +"?format=j1&lang=es")
+
         data= r.json()
         temperature = data["current_condition"][0]["temp_C"]
         humidity = data["current_condition"][0]["humidity"]
